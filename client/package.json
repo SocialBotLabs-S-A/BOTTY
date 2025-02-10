@@ -10,6 +10,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "format": "prettier --write --ignore-unknow ./src",
     "preview": "vite preview",
     "prepare": "husky"
   },
@@ -33,10 +34,15 @@
     "eslint-plugin-react-refresh": "0.4.18",
     "globals": "15.14.0",
     "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
     "prettier": "^3.5.0",
     "typescript": "~5.7.2",
     "typescript-eslint": "8.22.0",
     "vite": "6.1.0"
+  },
+  "lint-staged": {
+    "*.{ts, tsx, js}" : "npm run lint",
+    "**/*": "npm run format"
   },
   "engines": {
     "node": "22.12.0"
