@@ -1,5 +1,17 @@
+import { Route } from "react-router";
+import RoutesWithNotFound from "./components/RoutesWithNotFound";
+import AuthGuard from "./guard/AuthGuard";
+
 function App() {
-  return <h1 className="text-2xl">Hola</h1>;
+  return (
+    <RoutesWithNotFound>
+      <Route path="/login" element={<span>Login Page</span>} />
+      <Route path="/register" element={<span>Register Page</span>} />
+      <Route element={<AuthGuard />}>
+          {/* Aqui van a estar las rutas privadas */}
+      </Route>
+    </RoutesWithNotFound>
+  );
 }
 
 export default App;
