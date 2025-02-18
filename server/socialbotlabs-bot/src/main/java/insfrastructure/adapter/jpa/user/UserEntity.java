@@ -1,6 +1,10 @@
 package insfrastructure.adapter.jpa.user;
 
+import domain.model.RoleName;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -15,6 +19,30 @@ public class UserEntity {
     private String phone;
     private String email;
     private String password;
+
+    // Map the set of roles as an element collection
+    @ElementCollection(targetClass = RoleName.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<RoleName> roles = new HashSet<>();
+
+    public UserEntity() {
+    }
+
+    public UserEntity(Long id, String fullName,
+                      String companyName, String country,
+                      String phone, Set<RoleName> roles,
+                      String password, String email) {
+        this.id = id;
+        this.fullName = fullName;
+        this.companyName = companyName;
+        this.country = country;
+        this.phone = phone;
+        this.roles = roles;
+        this.password = password;
+        this.email = email;
+
+    }
 
     public Long getId() {
         return id;
@@ -70,5 +98,13 @@ public class UserEntity {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public Set<RoleName> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<RoleName> roles) {
+        this.roles = roles;
     }
 }

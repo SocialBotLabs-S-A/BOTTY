@@ -1,5 +1,8 @@
 package domain.model;
 
+import java.util.HashSet;
+import java.util.Set;
+// User model representing our application's user
 public class User {
     private Long id;
     private String fullName;
@@ -9,7 +12,15 @@ public class User {
     private String email;
     private String password;
 
-    public User(Long id, String fullName, String companyName, String country, String phone, String email, String password) {
+    // A set of roles assigned to the user
+    private Set<RoleName> roles = new HashSet<>();
+
+    public User() {
+    }
+
+    public User(Long id, String fullName, String companyName,
+                String country, String phone, String email,
+                String password,Set<RoleName> roles) {
         this.id = id;
         this.fullName = fullName;
         this.companyName = companyName;
@@ -17,6 +28,7 @@ public class User {
         this.phone = phone;
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 
     public String getCompanyName() {
@@ -77,5 +89,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<RoleName> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<RoleName> roles) {
+        this.roles = roles;
     }
 }
