@@ -1,9 +1,9 @@
-import { Navigate, Outlet } from "react-router";
+import { Navigate, Outlet } from 'react-router';
 
 const AuthGuard = () => {
-  const isAuth = null
+  const isAuth = null;
 
-  return isAuth ? <Outlet /> : <Navigate to='/login' replace />
-}
+  return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
+};
 
-export default AuthGuard
+export default AuthGuard;

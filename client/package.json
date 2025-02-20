@@ -10,18 +10,21 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "format": "prettier --write --ignore-unknown ./src",
     "preview": "vite preview",
+    "format": "prettier --write --ignore-unknown ./src",
     "prepare": "husky"
   },
   "dependencies": {
     "@tailwindcss/vite": "4.0.6",
     "axios": "1.7.9",
-    "eslint-config-prettier": "^10.0.1",
+    "eslint-config-prettier": "10.0.1",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-hot-toast": "^2.5.2",
+    "react-icons": "^5.4.0",
     "react-router": "7.1.5",
     "tailwindcss": "4.0.6",
+    "zod": "^3.24.2",
     "zustand": "5.0.3"
   },
   "devDependencies": {
@@ -33,15 +36,15 @@
     "eslint-plugin-react-hooks": "5.0.0",
     "eslint-plugin-react-refresh": "0.4.18",
     "globals": "15.14.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^15.4.3",
-    "prettier": "^3.5.0",
+    "husky": "9.1.7",
+    "lint-staged": "15.4.3",
+    "prettier": "3.5.0",
     "typescript": "~5.7.2",
     "typescript-eslint": "8.22.0",
     "vite": "6.1.0"
   },
   "lint-staged": {
-    "*.{ts, tsx, js}" : "npm run lint",
+    "*.{ts, tsx, js}": "npm run lint",
     "**/*": "npm run format"
   },
   "engines": {
