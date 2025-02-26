@@ -4,7 +4,6 @@ import domain.model.User;
 import domain.ports.UserRepositoryPort;
 import insfrastructure.adapter.jpa.user.UserEntity;
 import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 
 //This class is an adapter that implements the UserRepositoryPort interface.
@@ -30,7 +29,6 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
         return toDomain(saved);
     }
 
-    // Convert UserEntity to User (domain model)
     private User toDomain(UserEntity entity) {
         User user = new User();
         user.setId(entity.getId());
@@ -43,7 +41,6 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
         user.setRoles(entity.getRoles());
         return user;
     }
-    // Convert User (domain model) to UserEntity
     private UserEntity toEntity(User user) {
         UserEntity entity = new UserEntity();
         entity.setId(user.getId());
@@ -54,6 +51,7 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
         entity.setEmail(user.getEmail());
         entity.setPassword(user.getPassword());
         entity.setRoles(user.getRoles());
+
         return entity;
     }
 }

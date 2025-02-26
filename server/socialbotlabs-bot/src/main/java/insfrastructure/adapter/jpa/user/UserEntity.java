@@ -20,7 +20,6 @@ public class UserEntity {
     private String email;
     private String password;
 
-    // Map the set of roles as an element collection
     @ElementCollection(targetClass = RoleName.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -107,4 +106,5 @@ public class UserEntity {
     public void setRoles(Set<RoleName> roles) {
         this.roles = roles;
     }
+
 }

@@ -8,10 +8,10 @@ import domain.model.User;
 import domain.ports.UserRepositoryPort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
 
 @Service
 public class AuthService {
@@ -30,6 +30,7 @@ public class AuthService {
         if(existing.isPresent()){
             throw new RuntimeException("Email already in use");
         }
+
         // Assign default role (e.g., MODERATOR)
         Set<RoleName> roles = new HashSet<>();
         roles.add(RoleName.ROLE_MODERATOR);
@@ -43,6 +44,8 @@ public class AuthService {
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword()),
                 roles
+                //Encrypt the password
+                passwordEncoder.encode(request.getPassword())
         );
 
         User savedUser = userRepository.save(newUser);

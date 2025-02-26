@@ -14,13 +14,14 @@ public class User {
 
     // A set of roles assigned to the user
     private Set<RoleName> roles = new HashSet<>();
-
     public User() {
     }
 
     public User(Long id, String fullName, String companyName,
                 String country, String phone, String email,
                 String password,Set<RoleName> roles) {
+    public User(Long id, String fullName, String companyName, String country, String phone, String email, String password) {
+
         this.id = id;
         this.fullName = fullName;
         this.companyName = companyName;
@@ -90,7 +91,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
     public Set<RoleName> getRoles() {
         return roles;
     }
