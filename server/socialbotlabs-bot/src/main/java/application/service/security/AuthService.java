@@ -3,12 +3,15 @@ package application.service.security;
 import application.dto.security.AuthResponse;
 import application.dto.security.LoginRequest;
 import application.dto.security.RegisterRequest;
+import domain.model.RoleName;
 import domain.model.User;
 import domain.ports.UserRepositoryPort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+
 
 @Service
 public class AuthService {
@@ -28,6 +31,10 @@ public class AuthService {
             throw new RuntimeException("Email already in use");
         }
 
+        // Assign default role (e.g., MODERATOR)
+        Set<RoleName> roles = new HashSet<>();
+        roles.add(RoleName.ROLE_MODERATOR);
+        // Create the new user with the assigned roles
         User newUser = new User(
                 null,
                 request.getFullName(),
@@ -35,6 +42,8 @@ public class AuthService {
                 request.getCountry(),
                 request.getPhone(),
                 request.getEmail(),
+                passwordEncoder.encode(request.getPassword()),
+                roles
                 //Encrypt the password
                 passwordEncoder.encode(request.getPassword())
         );

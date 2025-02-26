@@ -3,10 +3,12 @@ package insfrastructure.adapter.persistence.user;
 import domain.model.User;
 import domain.ports.UserRepositoryPort;
 import insfrastructure.adapter.jpa.user.UserEntity;
-
+import org.springframework.stereotype.Component;
 import java.util.Optional;
+
 //This class is an adapter that implements the UserRepositoryPort interface.
 //It allows us to use the JPA repository in the service layer.
+@Component
 public class UserRepositoryAdapter implements UserRepositoryPort {
     private final JpaUserRepository jpaUserRepository;
 
@@ -28,17 +30,17 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     }
 
     private User toDomain(UserEntity entity) {
-        return new User(
-                entity.getId(),
-                entity.getFullName(),
-                entity.getCompanyName(),
-                entity.getCountry(),
-                entity.getPhone(),
-                entity.getEmail(),
-                entity.getPassword()
-        );
+        User user = new User();
+        user.setId(entity.getId());
+        user.setFullName(entity.getFullName());
+        user.setCompanyName(entity.getCompanyName());
+        user.setCountry(entity.getCountry());
+        user.setPhone(entity.getPhone());
+        user.setEmail(entity.getEmail());
+        user.setPassword(entity.getPassword());
+        user.setRoles(entity.getRoles());
+        return user;
     }
-
     private UserEntity toEntity(User user) {
         UserEntity entity = new UserEntity();
         entity.setId(user.getId());
@@ -48,6 +50,8 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
         entity.setPhone(user.getPhone());
         entity.setEmail(user.getEmail());
         entity.setPassword(user.getPassword());
+        entity.setRoles(user.getRoles());
+
         return entity;
     }
 }
