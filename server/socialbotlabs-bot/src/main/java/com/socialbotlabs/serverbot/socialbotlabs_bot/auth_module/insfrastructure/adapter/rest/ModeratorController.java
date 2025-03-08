@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 // Controller for moderator endpoints
 @RestController
-@RequestMapping("/v1/moderator")
+@RequestMapping("/moderator")
 @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
 public class ModeratorController {
 

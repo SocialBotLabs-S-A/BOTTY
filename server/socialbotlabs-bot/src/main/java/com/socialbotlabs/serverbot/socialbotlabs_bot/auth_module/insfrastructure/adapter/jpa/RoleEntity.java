@@ -1,33 +1,38 @@
 package com.socialbotlabs.serverbot.socialbotlabs_bot.auth_module.insfrastructure.adapter.jpa;
 
 
-import com.socialbotlabs.serverbot.socialbotlabs_bot.auth_module.domain.model.RoleName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "roles")
-public class RoleEntity {
+public class RoleEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private RoleName roleName;
+    private String name;
 
-
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<GrantedPermissionEntity> grantedPermissionSet = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "roleEntity", fetch = FetchType.EAGER)
+    private List<GrantedPermissionEntity> permissions;
 
     public RoleEntity() {
     }
 
-    public RoleEntity(Long id, Set<GrantedPermissionEntity> grantedPermissionSet, RoleName roleName) {
+    public RoleEntity(Long id, String name) {
         this.id = id;
-        this.grantedPermissionSet = grantedPermissionSet;
-        this.roleName = roleName;
+        this.name = name;
+    }
+
+    public RoleEntity(Long id, String name, List<GrantedPermissionEntity> permissions) {
+        this.id = id;
+        this.name = name;
+        this.permissions = permissions;
     }
 
     public Long getId() {
@@ -38,19 +43,19 @@ public class RoleEntity {
         this.id = id;
     }
 
-    public Set<GrantedPermissionEntity> getGrantedPermissionSet() {
-        return grantedPermissionSet;
+    public String getName() {
+        return name;
     }
 
-    public void setGrantedPermissionSet(Set<GrantedPermissionEntity> grantedPermissionSet) {
-        this.grantedPermissionSet = grantedPermissionSet;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public RoleName getRoleName() {
-        return roleName;
+    public List<GrantedPermissionEntity> getPermissions() {
+        return permissions;
     }
 
-    public void setRoleName(RoleName roleName) {
-        this.roleName = roleName;
+    public void setPermissions(List<GrantedPermissionEntity> permissions) {
+        this.permissions = permissions;
     }
 }

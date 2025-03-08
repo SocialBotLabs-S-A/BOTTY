@@ -1,34 +1,32 @@
 package com.socialbotlabs.serverbot.socialbotlabs_bot.auth_module.insfrastructure.adapter.jpa;
 
-import com.socialbotlabs.serverbot.socialbotlabs_bot.user_module.infrastructure.adapter.jpa.UserEntity;
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 
 @Entity
 @Table(name = "granted_permissions")
-public class GrantedPermissionEntity {
+public class GrantedPermissionEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Relationship to UserEntity
-    // Relación con UserEntity
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
-
-    // Relationship to RoleEntity
-    // Relación con RoleEntity
     @ManyToOne
     @JoinColumn(name = "role_id")
-    private RoleEntity role;
+    private RoleEntity roleEntity;
 
-    public GrantedPermissionEntity(Long id, UserEntity user, RoleEntity role) {
-        this.id = id;
-        this.user = user;
-        this.role = role;
-    }
+    @ManyToOne
+    @JoinColumn(name = "operation_id")
+    private OperationEntity  operationEntity;
 
     public GrantedPermissionEntity() {
+    }
+
+    public GrantedPermissionEntity(Long id, RoleEntity roleEntity, OperationEntity operationEntity) {
+        this.id = id;
+        this.roleEntity = roleEntity;
+        this.operationEntity = operationEntity;
     }
 
     public Long getId() {
@@ -39,19 +37,19 @@ public class GrantedPermissionEntity {
         this.id = id;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public RoleEntity getRoleEntity() {
+        return roleEntity;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setRoleEntity(RoleEntity roleEntity) {
+        this.roleEntity = roleEntity;
     }
 
-    public RoleEntity getRole() {
-        return role;
+    public OperationEntity getOperationEntity() {
+        return operationEntity;
     }
 
-    public void setRole(RoleEntity role) {
-        this.role = role;
+    public void setOperationEntity(OperationEntity operationEntity) {
+        this.operationEntity = operationEntity;
     }
 }

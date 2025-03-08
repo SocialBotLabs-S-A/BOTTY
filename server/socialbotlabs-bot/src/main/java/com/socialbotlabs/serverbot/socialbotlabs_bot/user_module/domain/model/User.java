@@ -1,44 +1,44 @@
 package com.socialbotlabs.serverbot.socialbotlabs_bot.user_module.domain.model;
 
-import com.socialbotlabs.serverbot.socialbotlabs_bot.auth_module.domain.model.GrantedPermission;
-
-import java.util.HashSet;
-import java.util.Set;
+import com.socialbotlabs.serverbot.socialbotlabs_bot.auth_module.domain.model.Role;
 
 // User model representing our application's user
 public class User {
+
     private Long id;
     private String fullName;
+    private String username;
     private String companyName;
     private String country;
     private String phone;
-    //access credentials
-
     private String email;
     private String password;
-    //Segurity status
+    private Role role;
 
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-    private boolean enabled;
-    //Roles
-    private Set<GrantedPermission> grantedPermissions = new HashSet<>();
+    private boolean accountNonExpired = true;
+    private boolean accountNonLocked = true;
+    private boolean credentialsNonExpired = true;
+    private boolean enabled = true;
+
     public User() {
     }
-    public User(Long id, String fullName, String companyName, String country, String phone, String email, boolean accountNonExpired, String password, boolean credentialsNonExpired, boolean accountNonLocked, Set<GrantedPermission> grantedPermissions, boolean enabled) {
+
+    public User(Long id,
+                String fullName,
+                String username,
+                String companyName,
+                String country,
+                String phone,
+                String email,
+                String password) {
         this.id = id;
         this.fullName = fullName;
+        this.username = username;
         this.companyName = companyName;
         this.country = country;
         this.phone = phone;
         this.email = email;
-        this.accountNonExpired = accountNonExpired;
         this.password = password;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.accountNonLocked = accountNonLocked;
-        this.grantedPermissions = grantedPermissions;
-        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -55,6 +55,14 @@ public class User {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getCompanyName() {
@@ -113,14 +121,6 @@ public class User {
         this.accountNonLocked = accountNonLocked;
     }
 
-    public Set<GrantedPermission> getGrantedPermissions() {
-        return grantedPermissions;
-    }
-
-    public void setGrantedPermissions(Set<GrantedPermission> grantedPermissions) {
-        this.grantedPermissions = grantedPermissions;
-    }
-
     public boolean isCredentialsNonExpired() {
         return credentialsNonExpired;
     }
@@ -135,5 +135,13 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
