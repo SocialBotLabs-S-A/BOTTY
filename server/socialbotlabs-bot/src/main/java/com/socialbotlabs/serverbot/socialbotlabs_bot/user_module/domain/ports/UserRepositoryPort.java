@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface UserRepositoryPort {
     Optional<User> findByEmail(String email);
     boolean saveUser(User user);
+
+    User saveExternalUser(User userFromGoogle);
 }

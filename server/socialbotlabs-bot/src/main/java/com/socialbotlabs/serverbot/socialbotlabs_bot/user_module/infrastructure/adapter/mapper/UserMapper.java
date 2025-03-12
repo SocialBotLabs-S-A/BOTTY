@@ -4,7 +4,7 @@ import com.socialbotlabs.serverbot.socialbotlabs_bot.auth_module.insfrastructure
 import com.socialbotlabs.serverbot.socialbotlabs_bot.user_module.domain.model.User;
 import com.socialbotlabs.serverbot.socialbotlabs_bot.user_module.infrastructure.adapter.jpa.UserEntity;
 
-public class UserMapper {
+public final class UserMapper {
 
     private UserMapper() {
     }
@@ -27,6 +27,7 @@ public class UserMapper {
     // Convert User (domain model) to UserEntity
     public static UserEntity toEntity(User user) {
         UserEntity userEntity = new UserEntity(
+            user.getId(),
             user.getFullName(),
             user.getUsername(),
             user.getCompanyName(),

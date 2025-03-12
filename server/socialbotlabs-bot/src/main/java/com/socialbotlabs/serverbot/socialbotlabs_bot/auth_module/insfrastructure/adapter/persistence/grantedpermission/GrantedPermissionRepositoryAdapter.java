@@ -3,6 +3,8 @@ package com.socialbotlabs.serverbot.socialbotlabs_bot.auth_module.insfrastructur
 import com.socialbotlabs.serverbot.socialbotlabs_bot.auth_module.domain.ports.GrantedPermissionRepositoryPort;
 
 
+
+
 public class GrantedPermissionRepositoryAdapter implements GrantedPermissionRepositoryPort {
     private final JpaGrantedPermissionRepository jpaGrantedPermissionRepository;
 

@@ -8,6 +8,7 @@ import com.socialbotlabs.serverbot.socialbotlabs_bot.user_module.infrastructure.
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -62,6 +63,10 @@ public class AuthService {
     }
 
     private boolean validatedPassword(RegisterRequest registerRequest){
+        if( !StringUtils.hasText(registerRequest.getPassword()) &&
+            !StringUtils.hasText(registerRequest.getRepeatPassword())){
+            return false;
+        }
         return registerRequest.getPassword().equals(registerRequest.getRepeatPassword());
     }
 }

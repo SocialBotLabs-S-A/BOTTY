@@ -32,11 +32,22 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     public boolean saveUser(User user) {
         try{
             UserEntity entity = UserMapper.toEntity(user);
-            jpaUserRepository.save(entity);
+            saveUserEntity(entity);
             return true;
         }catch (Exception e){
             LOGGER.error("Error saving user: {}", e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public User saveExternalUser(User externalUser) {
+        UserEntity entity = UserMapper.toEntity(externalUser);
+        UserEntity newUserEntity = saveUserEntity(entity);
+        return UserMapper.toDomain(newUserEntity);
+    }
+
+    private UserEntity saveUserEntity(UserEntity userEntity){
+        return jpaUserRepository.save(userEntity);
     }
 }

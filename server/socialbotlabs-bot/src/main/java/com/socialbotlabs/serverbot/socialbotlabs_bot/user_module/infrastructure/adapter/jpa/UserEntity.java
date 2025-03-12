@@ -1,11 +1,16 @@
 package com.socialbotlabs.serverbot.socialbotlabs_bot.user_module.infrastructure.adapter.jpa;
 
+import com.socialbotlabs.serverbot.socialbotlabs_bot.auth_module.insfrastructure.adapter.jpa.GrantedPermissionEntity;
+import com.socialbotlabs.serverbot.socialbotlabs_bot.auth_module.insfrastructure.adapter.jpa.OperationEntity;
 import com.socialbotlabs.serverbot.socialbotlabs_bot.auth_module.insfrastructure.adapter.jpa.RoleEntity;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -37,13 +42,15 @@ public class UserEntity implements UserDetails {
     public UserEntity() {
     }
 
-    public UserEntity(String fullName,
+    public UserEntity(Long id,
+        String fullName,
                       String username,
                       String companyName,
                       String country,
                       String phone,
                       String email,
                       String password) {
+        this.id = id;
         this.fullName = fullName;
         this.username = username;
         this.companyName = companyName;
@@ -55,7 +62,13 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+       if (roleEntity == null || roleEntity.getPermissions() == null) return Collections.emptyList();
+       List<SimpleGrantedAuthority> authorities = new ArrayList<>(roleEntity.getPermissions().stream()
+           .map(GrantedPermissionEntity::getOperationEntity)
+           .map(OperationEntity::getName)
+           .map(SimpleGrantedAuthority::new).toList());
+       authorities.add(new SimpleGrantedAuthority("ROLE_"+roleEntity.getName()));
+       return authorities;
     }
 
     @Override
