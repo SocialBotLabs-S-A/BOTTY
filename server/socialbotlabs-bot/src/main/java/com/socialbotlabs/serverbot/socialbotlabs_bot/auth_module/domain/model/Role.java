@@ -1,19 +1,15 @@
 package com.socialbotlabs.serverbot.socialbotlabs_bot.auth_module.domain.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Role {
     private Long id;
-    private RoleName roleName;
-    private Set<GrantedPermission> grantedPermissionSet = new HashSet<>();
+    private String name;
 
-    public Role() {}
+    public Role() {
+    }
 
-    public Role(Long id, RoleName roleName, Set<GrantedPermission> grantedPermissionSet) {
+    public Role(Long id, String name) {
         this.id = id;
-        this.roleName = roleName;
-        this.grantedPermissionSet = grantedPermissionSet;
+        this.name = name;
     }
 
     public Long getId() {
@@ -24,19 +20,11 @@ public class Role {
         this.id = id;
     }
 
-    public RoleName getRoleName() {
-        return roleName;
+    public String getName() {
+        return name;
     }
 
-    public void setRoleName(RoleName roleName) {
-        this.roleName = roleName;
-    }
-
-    public Set<GrantedPermission> getGrantedPermissionSet() {
-        return grantedPermissionSet;
-    }
-
-    public void setGrantedPermissionSet(Set<GrantedPermission> grantedPermissionSet) {
-        this.grantedPermissionSet = grantedPermissionSet;
+    public void setName(String name) {
+        this.name = name;
     }
 }
