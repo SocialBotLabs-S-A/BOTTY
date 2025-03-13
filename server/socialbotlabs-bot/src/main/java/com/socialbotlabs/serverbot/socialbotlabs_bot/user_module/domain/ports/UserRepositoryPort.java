@@ -1,0 +1,14 @@
+package com.socialbotlabs.serverbot.socialbotlabs_bot.user_module.domain.ports;
+
+import com.socialbotlabs.serverbot.socialbotlabs_bot.user_module.domain.model.User;
+
+import java.util.Optional;
+//defines an interface for user persistence.
+//it allows the business logic (in the service)
+// not to depend on how persistence is implemented (JPA, JDBC, etc.).
+public interface UserRepositoryPort {
+    Optional<User> findByEmail(String email);
+    boolean saveUser(User user);
+
+    User saveExternalUser(User userFromGoogle);
+}
