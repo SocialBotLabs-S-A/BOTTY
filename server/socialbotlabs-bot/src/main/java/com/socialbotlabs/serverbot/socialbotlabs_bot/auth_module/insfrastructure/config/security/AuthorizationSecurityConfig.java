@@ -6,6 +6,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.socialbotlabs.serverbot.socialbotlabs_bot.user_module.application.service.UserOauth2Service;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -14,7 +15,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.session.SessionRegistry;
@@ -49,9 +49,12 @@ public class AuthorizationSecurityConfig {
     private static final int KEY_SIZE = 2048;
 
     private final UserOauth2Service userOauth2Service;
+    private final String loginPage;
 
-    public AuthorizationSecurityConfig(UserOauth2Service userOauth2Service) {
+    public AuthorizationSecurityConfig(UserOauth2Service userOauth2Service,
+                                       @Value("${social.botty.default.login.page}") String loginPage) {
         this.userOauth2Service = userOauth2Service;
+        this.loginPage = loginPage;
     }
 
     @Bean
@@ -71,7 +74,7 @@ public class AuthorizationSecurityConfig {
             // authorization endpoint
             .exceptionHandling(httpSecurityExceptionHandlingConfigurer ->
                 httpSecurityExceptionHandlingConfigurer.defaultAuthenticationEntryPointFor(
-                    new LoginUrlAuthenticationEntryPoint("/login"),
+                    new LoginUrlAuthenticationEntryPoint(loginPage),
                     new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                 ))
             .csrf(AbstractHttpConfigurer::disable);
@@ -82,22 +85,20 @@ public class AuthorizationSecurityConfig {
     @Order(2)
     public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-            .sessionManagement(
-                httpSecuritySessionManagementConfigurer ->
-                    httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth ->
-                auth.requestMatchers("/auth/**","/client/**", "/login").permitAll()
+                auth.requestMatchers("/auth/**","/client/**", loginPage).permitAll()
                     .anyRequest().authenticated()
             )
             .formLogin(form -> form
-                .loginPage("/login")
+                .loginPage(loginPage)
                 .permitAll()
             )
             .oauth2Login(httpSecurityOAuth2LoginConfigurer ->{
-                httpSecurityOAuth2LoginConfigurer.loginPage("/login");
+                httpSecurityOAuth2LoginConfigurer.loginPage(loginPage);
                 FederatedIdentityAuthenticationSuccessHandler fed =
                     new FederatedIdentityAuthenticationSuccessHandler();
                 fed.setOAuth2UserHandler(new UserRepositoryOAuth2UserHandler(userOauth2Service));
+                httpSecurityOAuth2LoginConfigurer.successHandler(fed);
                 })
             .csrf(AbstractHttpConfigurer::disable);
         return http.build();
