@@ -15,7 +15,6 @@ public final class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2Use
 
     @Override
     public void accept(OAuth2User user) {
-
         if (!userOauth2Service.existsOauth2User(user)) {
             userOauth2Service.registerNewOauth2User(user);
         }

@@ -22,7 +22,7 @@ public class UserOauth2RepositoryAdapter implements UserOauth2RepositoryPort {
 
     @Override
     public Optional<UserOauth2> findByUser(User user) {
-        return jpaUserOauth2Repository.findByUser(UserMapper.toEntity(user)).map(UserOauth2Mapper::toDomain);
+        return jpaUserOauth2Repository.findByUserEntity(UserMapper.toEntity(user)).map(UserOauth2Mapper::toDomain);
     }
 
     @Override

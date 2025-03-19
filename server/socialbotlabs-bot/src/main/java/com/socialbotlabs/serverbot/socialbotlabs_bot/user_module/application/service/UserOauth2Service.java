@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class UserOauth2Service {
@@ -88,7 +89,8 @@ public class UserOauth2Service {
             return user.getAttribute("sub");
         }
         if (provider.contains(GITHUB_PROVIDER)){
-            return user.getAttribute("id");
+            Object idObject = user.getAttribute("id");
+            return idObject != null ? idObject.toString() : null;
         }
         return null;
     }
@@ -97,6 +99,9 @@ public class UserOauth2Service {
         User user = new User();
         user.setEmail(oAuth2User.getAttribute("email"));
         user.setFullName(oAuth2User.getAttribute("name"));
+        String username = Objects.requireNonNull(oAuth2User.getAttribute("name")) +
+            Objects.requireNonNull(oAuth2User.getAttribute("sub")).toString();
+        user.setUsername(username);
         Role role = roleRepositoryAdapter.findByRoleName(defaultRole)
             .orElseThrow(() -> new RuntimeException("Role not found"));
         user.setRole(role);
@@ -115,6 +120,9 @@ public class UserOauth2Service {
         User user = new User();
         user.setEmail(fetchPrimaryGithubEmail(getAccessTokenFromOauth2Github(oAuth2AuthenticationToken)));
         user.setFullName(oAuth2User.getAttribute("name"));
+        String username = Objects.requireNonNull(oAuth2User.getAttribute("name")) +
+            Objects.requireNonNull(oAuth2User.getAttribute("id")).toString();
+        user.setUsername(username);
         Role role = roleRepositoryAdapter.findByRoleName(defaultRole)
            .orElseThrow(() -> new RuntimeException("Role not found"));
         user.setRole(role);
@@ -124,7 +132,8 @@ public class UserOauth2Service {
     private UserOauth2 createUserFromOauth2Github(OAuth2User oAuth2User){
         UserOauth2 userOauth2 = new UserOauth2();
         userOauth2.setProvider(GITHUB_PROVIDER);
-        userOauth2.setProviderId(oAuth2User.getAttribute("id"));
+        Object idObject = oAuth2User.getAttribute("id");
+        userOauth2.setProviderId(idObject != null ? idObject.toString() : null);
         userOauth2.setProfilePicture(oAuth2User.getAttribute("avatar_url"));
         return userOauth2;
     }
