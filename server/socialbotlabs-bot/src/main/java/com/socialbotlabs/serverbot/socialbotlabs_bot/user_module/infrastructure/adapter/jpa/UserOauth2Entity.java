@@ -13,7 +13,7 @@ public class UserOauth2Entity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity userEntity;
 
     @Column(nullable = false)

@@ -27,8 +27,8 @@ import java.util.Objects;
 @Service
 public class UserOauth2Service {
 
-    private static final String GOOGLE_PROVIDER = "google";
-    private static final String GITHUB_PROVIDER = "github";
+    private static final String GOOGLE_PROVIDER = "google-idp";
+    private static final String GITHUB_PROVIDER = "github-idp";
 
     @Value("${social.botty.default.role}")
     private String defaultRole;
