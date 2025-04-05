@@ -32,6 +32,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
 import java.security.KeyPair;
@@ -50,11 +51,14 @@ public class AuthorizationSecurityConfig {
 
     private final UserOauth2Service userOauth2Service;
     private final String loginPage;
+    private final String logoutPage;
 
     public AuthorizationSecurityConfig(UserOauth2Service userOauth2Service,
-                                       @Value("${social.botty.default.login.page}") String loginPage) {
+                                       @Value("${social.botty.default.login.page}") String loginPage,
+                                       @Value("${social.botty.default.logout.page}") String logoutPage) {
         this.userOauth2Service = userOauth2Service;
         this.loginPage = loginPage;
+        this.logoutPage = logoutPage;
     }
 
     @Bean
@@ -86,13 +90,19 @@ public class AuthorizationSecurityConfig {
     public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth ->
-                auth.requestMatchers("/auth/**","/client/**", loginPage).permitAll()
+                auth.requestMatchers("/auth/**","/client/**", loginPage,logoutPage).permitAll()
                     .anyRequest().authenticated()
             )
             .formLogin(form -> form
                 .loginPage(loginPage)
                 .permitAll()
             )
+            .logout(logout -> logout.logoutUrl("/logout")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
+                .logoutSuccessUrl(loginPage+"?logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .clearAuthentication(true))
             .oauth2Login(httpSecurityOAuth2LoginConfigurer ->{
                 httpSecurityOAuth2LoginConfigurer.loginPage(loginPage);
                 FederatedIdentityAuthenticationSuccessHandler fed =
